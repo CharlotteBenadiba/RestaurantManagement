@@ -1,0 +1,66 @@
+CREATE SEQUENCE customer_id_seq
+START WITH 101;
+
+CREATE TABLE Customer (
+	customer_id TEXT PRIMARY KEY DEFAULT 'C' || NEXTVAL('customer_id_seq'),
+	first_name VARCHAR(100) NOT NULL,
+	last_name VARCHAR(100) NOT NULL,
+	email VARCHAR(100) NOT NULL,
+	phone_number INT NOT NULL,
+	created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE SEQUENCE waiter_id_seq
+START WITH 101;
+
+CREATE TABLE Waiters (
+	waiter_id TEXT PRIMARY KEY DEFAULT 'W' || NEXTVAL('waiter_id_seq'),
+	first_name VARCHAR(100) NOT NULL,
+	last_name VARCHAR(100) NOT NULL,
+	created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE SEQUENCE menu_id_seq
+START WITH 101;
+
+CREATE TABLE Menu(
+	item_id TEXT PRIMARY KEY DEFAULT 'M' || NEXTVAL('menu_id_seq'),
+	item_name VARCHAR(100) NOT NULL,
+	category VARCHAR(100) NOT NULL,
+	price INT NOT NULL,
+	available BOOLEAN DEFAULT TRUE,
+	created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	deleted TIMESTAMP DEFAULT NULL
+);
+
+
+CREATE SEQUENCE order_id_seq
+START WITH 101;
+
+CREATE TABLE Orders(
+	order_id TEXT PRIMARY KEY DEFAULT 'OR' || NEXTVAL('order_id_seq'),
+	customer_id TEXT NOT NULL,
+	waiter_id TEXT NOT NULL,
+	items JSON NOT NULL,
+	total_price INT NOT NULL,
+	food_unavailable BOOLEAN DEFAULT FALSE,
+	prepare_order BOOLEAN DEFAULT FALSE,
+	order_ready BOOLEAN DEFAULT FALSE,
+	order_delivered BOOLEAN DEFAULT FALSE,
+	created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	cancelled BOOLEAN DEFAULT FALSE,
+	CONSTRAINT fk_customer
+      FOREIGN KEY(customer_id) 
+        REFERENCES Customers(customer_id),
+	CONSTRAINT fk_waiter
+      FOREIGN KEY(waiter_id) 
+        REFERENCES Waiters(waiter_id)
+);
+
+
