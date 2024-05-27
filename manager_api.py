@@ -36,7 +36,7 @@ class ManagerChoices:
         results = cls.cursor.fetchall()
         for row in results:
             print(
-                f"Total number of active orders: {row[0]} with a total of ${row[1]}\n"
+                f"Total number of active orders: {row[0]} with a total of £{row[1]}\n"
             )
         time.sleep(0.2)
         menu.manager()
@@ -51,7 +51,7 @@ class ManagerChoices:
         results = cls.cursor.fetchall()
         for row in results:
             print(
-                f"The total number of cancelled orders is: {row[0]} with a total value of ${row[1]}\n"
+                f"The total number of cancelled orders is: {row[0]} with a total value of £{row[1]}\n"
             )
         time.sleep(0.2)
         menu.manager()
