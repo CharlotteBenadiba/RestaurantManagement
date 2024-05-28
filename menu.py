@@ -10,6 +10,7 @@ def menu():
 
     choice = input(
         """
+    W: Waitlist
     A: Restaurant
     B: Kitchen
     M: Manager
@@ -24,6 +25,8 @@ def menu():
         kitchen()
     elif choice == "m":
         manager()
+    elif choice == "w":
+        waitlist()
     elif choice == "q":
         sys.exit()
     else:
@@ -139,6 +142,38 @@ def manager():
         print("You must only select either A, B, C, D or Q")
         print("Please try again")
         manager()
+
+
+def waitlist():
+    from waitlist_api import WaitListChoices
+
+    print("-----The Institute Waitlist-----")
+
+    choice = input(
+        """
+    A: Show Waitlist
+    B: Add to Waitlist
+    C: Mark as Seated
+    R: Return
+    Q: Quit
+
+    Please enter your choice: """
+    ).lower()
+
+    if choice == "a":
+        WaitListChoices.show_list()
+    elif choice == "b":
+        WaitListChoices.insert()
+    elif choice == "c":
+        WaitListChoices.update()
+    elif choice == "r":
+        menu()
+    elif choice == "q":
+        sys.exit()
+    else:
+        print("You must only select either A, B, C or Q")
+        print("Please try again")
+        waitlist()()
 
 
 if __name__ == "__main__":
