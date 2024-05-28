@@ -44,11 +44,11 @@ def restaurant():
     C: Change Order
     D: Cancel Order
     E: Pay for Order
+    R: Return
     Q: Quit
 
     Please enter your choice: """
     ).lower()
-
     if choice == "a":
         RestaurantChoices.view()
     elif choice == "b":
@@ -59,12 +59,13 @@ def restaurant():
         RestaurantChoices.cancelled()
     elif choice == "e":
         RestaurantChoices.complete()
+    elif choice == "r":
+        menu()
     elif choice == "q":
         sys.exit()
     else:
         print("You must only select either A, B, C, D or Q")
         print("Please try again")
-        restaurant()
 
 
 def kitchen():
@@ -78,6 +79,7 @@ def kitchen():
     B: Food Availability
     C: Mark as Ready
     D: Mark as Delivered
+    R: Return
     Q: Quit
 
     Please enter your choice: """
@@ -91,6 +93,8 @@ def kitchen():
         KitchenChoices.update_re()
     elif choice == "d":
         KitchenChoices.update_de()
+    elif choice == "r":
+        menu()
     elif choice == "q":
         sys.exit()
     else:
@@ -109,7 +113,9 @@ def manager():
     A: Number of Total Orders
     B: Number of Active Orders
     C: Number of Cancelled Orders
-    D: Best Waiters
+    D: Best Waiter
+    E: Best Customer
+    R: Return
     Q: Quit
 
     Please enter your choice: """
@@ -123,6 +129,10 @@ def manager():
         ManagerChoices.search_co()
     elif choice == "d":
         ManagerChoices.search_bw()
+    elif choice == "e":
+        ManagerChoices.search_bc()
+    elif choice == "r":
+        menu()
     elif choice == "q":
         sys.exit()
     else:

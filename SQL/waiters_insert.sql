@@ -22,3 +22,11 @@ INSERT INTO waiters (first_name, last_name) VALUES
 
 
 SELECT * FROM waiters;
+SELECT * FROM orders ORDER BY modified DESC;
+
+UPDATE Orders 
+SET cancelled = FALSE 
+WHERE order_id = 'OR109'
+
+ALTER TABLE Orders
+DROP COLUMN food_unavailable;
