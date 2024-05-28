@@ -18,8 +18,10 @@ class RestaurantChoices:
     @classmethod
     def view(cls):
         query = """
-        SELECT item_name AS Name, category AS Category, concat('$', price) AS Price FROM Menu WHERE available = TRUE
-        ORDER BY  category DESC
+        SELECT item_name AS Name, category AS Category, concat('$', price) AS Price 
+        FROM Menu 
+        WHERE available = TRUE
+        ORDER BY category DESC
         """
         cls.cursor.execute(query)
         results = cls.cursor.fetchall()
@@ -32,51 +34,56 @@ class RestaurantChoices:
 
     @classmethod
     def insert(cls):
-        # cls.view()
         cu_choice = input("Enter Customer ID: ")
         wa_choice = input("Enter Waiter ID: ")
-        fo_choice = input(
-            "What would you like to order today? (comma-separated item names): "
-        )
+        while True:
+            fo_choice = input(
+                "What would you like to order today? (comma-separated item names): "
+            )
 
-        # Split the food choice input into individual item names
-        item_names = [item.strip() for item in fo_choice.split(",")]
+            # Split the food choice input into individual item names
+            item_names = [item.strip() for item in fo_choice.split(",")]
 
-        # Prepare the items JSON array
-        items = []
-        for item_name in item_names:
+            # Prepare the items JSON array
+            items = []
+            for item_name in item_names:
+                query = """
+                SELECT item_id, category, price FROM Menu WHERE item_name = %s AND available = TRUE
+                """
+                cls.cursor.execute(query, (item_name,))
+                details = cls.cursor.fetchone()
+                if details:
+                    item_id, category, price = details
+                    items.append(
+                        {
+                            "item_id": item_id,
+                            "category": category,
+                            "price": price,
+                            "item_name": item_name,
+                        }
+                    )
+                else:
+                    print(f"{item_name} was not found in the menu")
+                    break
+
+            if not items:
+                continue
+
+            # Convert the items list to JSON
+            items_json = json.dumps(items)
+
+            # Prepare the INSERT query
             query = """
-            SELECT item_id, category, price FROM Menu WHERE item_name = %s AND available = TRUE
+            INSERT INTO orders (customer_id, waiter_id, items)
+            VALUES (%s, %s, %s)
             """
-            cls.cursor.execute(query, (item_name,))
-            details = cls.cursor.fetchone()
-            if details:
-                item_id, category, price = details
-                items.append(
-                    {
-                        "item_id": item_id,
-                        "category": category,
-                        "price": price,
-                        "item_name": item_name,
-                    }
-                )
-            else:
-                print(f"Item '{item_name}' not found in the menu")
+            cls.cursor.execute(query, (cu_choice, wa_choice, items_json))
 
-        # Convert the items list to JSON
-        items_json = json.dumps(items)
+            # Commit the transaction
+            cls.conn.commit()
 
-        # Prepare the INSERT query
-        query = """
-        INSERT INTO orders (customer_id, waiter_id, items)
-        VALUES (%s, %s, %s)
-        """
-        cls.cursor.execute(query, (cu_choice, wa_choice, items_json))
-
-        # Commit the transaction
-        cls.conn.commit()
-
-        print(f"Order of {item_names} has been created successfully!")
+            print(f"Order of {item_names} has been created successfully!")
+            break
 
     @classmethod
     def update(cls):
@@ -175,6 +182,3 @@ class RestaurantChoices:
 
     def close_connection(cls):
         cls.conn.close()
-
-
-# RestaurantChoices.insert()
