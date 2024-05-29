@@ -1,6 +1,7 @@
 import psycopg2
 from tabulate import tabulate
 import json
+import menu
 
 
 class RestaurantChoices:
@@ -28,8 +29,6 @@ class RestaurantChoices:
         if results:
             headers = [desc[0].upper() for desc in cls.cursor.description]
             print(tabulate(results, headers=headers, tablefmt="fancy_grid"))
-        import menu
-
         menu.restaurant()
 
     @classmethod
@@ -84,6 +83,7 @@ class RestaurantChoices:
 
             print(f"Order of {item_names} has been created successfully!")
             break
+        menu.restaurant()
 
     @classmethod
     def update(cls):
@@ -142,6 +142,7 @@ class RestaurantChoices:
         cls.cursor.execute(query2)
         cls.conn.commit()
         print(f"We have changed {change_item} to {new_item}")
+        menu.restaurant()
 
     @classmethod
     def cancelled(cls):
@@ -154,6 +155,7 @@ class RestaurantChoices:
         """
         cls.cursor.execute(query)
         print(f"The food for Order ID '{order_id_input}' has been cancelled")
+        menu.restaurant()
 
     @classmethod
     def complete(cls):
@@ -220,6 +222,7 @@ class RestaurantChoices:
                         f"Order Total: £{total_price}. You still owe {total_price - amount_paid}"
                     )
                 cls.conn.commit()
+                menu.restaurant()
 
     def close_connection(cls):
         cls.conn.close()
