@@ -24,7 +24,7 @@ class ManagerChoices:
         cls.cursor.execute(query_search_to)
         results = cls.cursor.fetchall()
         for row in results:
-            print(f"Total number of orders: \n{row[0]} with a total of ${row[1]}\n")
+            print(f"Total number of orders: \n{row[0]} with a total of £{row[1]}\n")
 
         query_search_ao = """
         SELECT COUNT(order_id), SUM(total_price) FROM Orders WHERE order_delivered = FALSE
