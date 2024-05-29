@@ -113,27 +113,23 @@ def manager():
 
     choice = input(
         """
-    A: Number of Total Orders
-    B: Number of Active Orders
-    C: Number of Cancelled Orders
-    D: Best Waiter
-    E: Best Customer
+    A: Reports
+    B: Activate Waiter
+    C: Deactivate Waiter
+    D: Delete Customer
     R: Return
     Q: Quit
 
     Please enter your choice: """
     ).lower()
-
     if choice == "a":
-        ManagerChoices.search_to()
+        ManagerChoices.reports()
     elif choice == "b":
-        ManagerChoices.search_ao()
+        ManagerChoices.activate_w()
     elif choice == "c":
-        ManagerChoices.search_co()
+        ManagerChoices.deactivate_w()
     elif choice == "d":
-        ManagerChoices.search_bw()
-    elif choice == "e":
-        ManagerChoices.search_bc()
+        ManagerChoices.del_cu()
     elif choice == "r":
         menu()
     elif choice == "q":

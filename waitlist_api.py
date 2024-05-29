@@ -18,7 +18,7 @@ class WaitListChoices:
     @classmethod
     def show_list(cls):
         query = """
-        SELECT CONCAT(first_name, ' ', last_name) AS Name, email AS Email, phone_number AS Phone_Number
+        SELECT waitlist_id AS Waitlist_ID, CONCAT(first_name, ' ', last_name) AS Name, email AS Email, phone_number AS Phone_Number
         FROM Waitlist 
         ORDER BY modified DESC
         """

@@ -16,50 +16,37 @@ class ManagerChoices:
     cursor = conn.cursor()
 
     @classmethod
-    def search_to(cls):
-        query = """
+    def reports(cls):
+        print("\n-----The Institue Reports-----\n")
+        query_search_to = """
         SELECT COUNT(order_id), SUM(total_price) FROM Orders
         """
-        cls.cursor.execute(query)
+        cls.cursor.execute(query_search_to)
         results = cls.cursor.fetchall()
         for row in results:
-            print(f"Total number of orders: {row[0]} with a total of ${row[1]}\n")
-        time.sleep(0.2)
-        menu.manager()
+            print(f"Total number of orders: \n{row[0]} with a total of ${row[1]}\n")
 
-    @classmethod
-    def search_ao(cls):
-        query = """
+        query_search_ao = """
         SELECT COUNT(order_id), SUM(total_price) FROM Orders WHERE order_delivered = FALSE
         """
-        cls.cursor.execute(query)
+        cls.cursor.execute(query_search_ao)
         results = cls.cursor.fetchall()
         for row in results:
             print(
-                f"Total number of active orders: {row[0]} with a total of £{row[1]}\n"
+                f"Total number of active orders:\n{row[0]} with a total of £{row[1]}\n"
             )
-        time.sleep(0.2)
-        menu.manager()
 
-    @classmethod
-    def search_co(cls):
-        # searches db table orders for a count of all cancelled orders (orders that have cancelled as TRUE)
-        query = """
+        query_search_co = """
         SELECT COUNT(order_id), SUM(total_price) FROM Orders WHERE cancelled = TRUE
         """
-        cls.cursor.execute(query)
+        cls.cursor.execute(query_search_co)
         results = cls.cursor.fetchall()
         for row in results:
             print(
-                f"The total number of cancelled orders is: {row[0]} with a total lost value of £{row[1]}\n"
+                f"The total number of cancelled orders is:\n{row[0]} with a total lost value of £{row[1]}\n"
             )
-        time.sleep(0.2)
-        menu.manager()
 
-    @classmethod
-    def search_bw(cls):
-        # searches db table orders for the count of all waiters and returns 1 row with the count in desc order
-        query = """
+        query_search_bw = """
         SELECT CONCAT(wa.first_name, ' ', wa.last_name) AS full_name, COUNT(ord.waiter_id) AS total_orders
         FROM Orders AS ord 
         JOIN Waiters AS wa ON ord.waiter_id = wa.waiter_id
@@ -67,20 +54,15 @@ class ManagerChoices:
         ORDER BY total_orders DESC
         LIMIT 1
         """
-        cls.cursor.execute(query)
+        cls.cursor.execute(query_search_bw)
         result = cls.cursor.fetchone()
         if result:
             full_name, total_orders = result
             print(
-                f"The waiter with the highest number of sales is: {full_name} with {total_orders} orders\n"
+                f"The waiter with the highest number of sales is:\n{full_name} with {total_orders} orders\n"
             )
-        time.sleep(0.2)
-        menu.manager()
 
-    @classmethod
-    def search_bc(cls):
-        # searches db table orders for the count of all customers and returns 1 row with the count in desc order
-        query = """
+        query_search_bw = """
         SELECT CONCAT(cu.first_name, ' ', cu.last_name) AS full_name, COUNT(ord.customer_id) AS total_orders
         FROM Orders AS ord 
         JOIN Customers AS cu ON ord.customer_id = cu.customer_id
@@ -88,14 +70,66 @@ class ManagerChoices:
         ORDER BY total_orders DESC
         LIMIT 1
         """
-        cls.cursor.execute(query)
+        cls.cursor.execute(query_search_bw)
         result = cls.cursor.fetchone()
         if result:
             full_name, total_orders = result
             print(
-                f"The customer with the highest number of orders is: {full_name} with {total_orders} orders\n"
+                f"The customer with the highest number of orders is:\n{full_name} with {total_orders} orders\n"
             )
-        time.sleep(0.2)
+
+        query_pm = """
+        SELECT AVG(amount_paid) AS avg_paid, COUNT(order_id) AS num_orders
+        FROM Orders
+        WHERE order_complete = FALSE
+        """
+        cls.cursor.execute(query_pm)
+        result = cls.cursor.fetchone()
+        if result:
+            avg_paid, num_orders = result
+        print(
+            f"Potential Money:\nThe Institute currently has a potential to make £{round(avg_paid*num_orders, 2)} from the current seated customers\n"
+        )
+        time.sleep(0.5)
+        menu.manager()
+
+    @classmethod
+    def activate_w(cls):
+        wa_input = input("Enter Waiter ID: ")
+        query = f"""
+        UPDATE Waiters
+        SET active = TRUE
+        WHERE waiter_id = '{wa_input}'
+        """
+        cls.cursor.execute(query)
+        cls.conn.commit()
+        print(f"Waiter '{wa_input}' has been activated")
+        menu.manager()
+
+    @classmethod
+    def deactivate_w(cls):
+        wa_input = input("Enter Waiter ID: ")
+        query = f"""
+        UPDATE Waiters
+        SET active = FALSE
+        WHERE waiter_id = '{wa_input}'
+        """
+        cls.cursor.execute(query)
+        cls.conn.commit()
+        print(f"Waiter {wa_input} has been deactivated")
+        menu.manager()
+
+    @classmethod
+    def del_cu(cls):
+        cu_input = input("Enter Customer ID: ")
+        query = f"""
+        UPDATE Customers
+        SET deleted = CURRENT_TIMESTAMP
+        WHERE customer_id = '{cu_input}'
+        """
+        cls.cursor.execute(query)
+        cls.conn.commit()
+        print(f"Customer {cu_input} has been deleted")
         menu.manager()
 
     def close_connection(cls):

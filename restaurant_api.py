@@ -157,7 +157,7 @@ class RestaurantChoices:
 
     @classmethod
     def complete(cls):
-        # updates order_complete column in orders table from FALSE to TRUE
+        # updates order_complete column in orders table from FALSE to TRUE and adds the amount paid to the db
         order_id_input = input("Enter Order ID: ")
         query2 = """
         SELECT total_price
