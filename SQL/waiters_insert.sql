@@ -24,9 +24,16 @@ INSERT INTO waiters (first_name, last_name) VALUES
 SELECT * FROM waiters;
 SELECT * FROM orders ORDER BY modified DESC;
 
-UPDATE Orders 
-SET cancelled = FALSE 
-WHERE order_id = 'OR109'
 
 ALTER TABLE Orders
 DROP COLUMN food_unavailable;
+
+DELETE FROM Orders WHERE order_id = 'OR115'
+
+UPDATE Orders
+SET amount_paid = total_price
+WHERE order_id = 'OR108'
+
+UPDATE Orders
+SET payment_method_id = 4
+WHERE order_id = 'OR112'

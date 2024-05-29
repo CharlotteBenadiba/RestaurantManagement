@@ -63,4 +63,31 @@ CREATE TABLE Orders(
         REFERENCES Waiters(waiter_id)
 );
 
+ALTER TABLE orders
+ADD order_complete BOOLEAN DEFAULT FALSE;
 
+
+CREATE SEQUENCE waitlist_id_seq
+START WITH 101;
+
+CREATE TABLE Waitlist(
+	waitlist_id TEXT PRIMARY KEY DEFAULT 'WL' || NEXTVAL('waitlist_id_seq'),
+	first_name VARCHAR(100) NOT NULL,
+	last_name VARCHAR(100) NOT NULL,
+	email VARCHAR(100) NOT NULL,
+	phone_number BIGINT NOT NULL,
+	created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE waitlist
+ADD seated BOOLEAN DEFAULT FALSE;
+
+CREATE TABLE payment_method (
+	id SERIAL PRIMARY KEY,
+	type VARCHAR(50) NOT NULL
+);
+
+ALTER TABLE Orders
+ADD amount_paid INT DEFAULT 0,
+ADD payment_method_id INT DEFAULT NULL;

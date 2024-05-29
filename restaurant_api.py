@@ -168,17 +168,58 @@ class RestaurantChoices:
         result = cls.cursor.fetchone()
 
         if result:
-            total_price = result[0]
+            total_price = float(result[0])
+            print(f"Your total is: £{total_price}")
 
-        query = f"""
-        UPDATE Orders
-        SET order_complete = TRUE
-        WHERE order_id = '{order_id_input}'
-        """
+            pm_input = input("Enter Payment Method (1-4): ")
 
-        cls.cursor.execute(query, (order_id_input,))
-        cls.conn.commit()
-        print(f"Order Total: £{total_price}. You have paid for your order successfully")
+            amount_paid = 0.0
+
+            while amount_paid < total_price:
+                am_input = float(input("How much would you like to pay?: "))
+                amount_paid += am_input
+
+                if amount_paid >= total_price:
+                    query_p = """
+                    UPDATE Orders
+                    SET payment_method_id = %s
+                    WHERE order_id = %s
+                    """
+                    cls.cursor.execute(
+                        query_p,
+                        (
+                            pm_input,
+                            order_id_input,
+                        ),
+                    )
+
+                    query_a = """
+                    UPDATE Orders
+                    SET amount_paid = %s
+                    WHERE order_id = %s
+                    """
+                    cls.cursor.execute(
+                        query_a,
+                        (
+                            am_input,
+                            order_id_input,
+                        ),
+                    )
+
+                    query = """
+                    UPDATE Orders
+                    SET order_complete = TRUE
+                    WHERE order_id = %s
+                    """
+                    cls.cursor.execute(query, (order_id_input,))
+                    print(
+                        f"Order Total was £{total_price}. You have paid the amount of £{am_input} for your order successfully. The order is now closed, thank you!"
+                    )
+                else:
+                    print(
+                        f"Order Total: £{total_price}. You still owe {total_price - amount_paid}"
+                    )
+                cls.conn.commit()
 
     def close_connection(cls):
         cls.conn.close()

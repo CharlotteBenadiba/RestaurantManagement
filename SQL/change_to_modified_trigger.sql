@@ -38,3 +38,10 @@ BEFORE INSERT OR UPDATE
 ON customers
 FOR EACH ROW
 EXECUTE FUNCTION update_modified_column();
+
+-- Create a trigger to call the function after insert or update on the waitlist table
+CREATE TRIGGER menu_update_modified
+BEFORE INSERT OR UPDATE
+ON waitlist
+FOR EACH ROW
+EXECUTE FUNCTION update_modified_column();
