@@ -75,5 +75,4 @@ INSERT INTO Menu (item_name, category, price) VALUES
 ('Martini', 'Drinks', 7.49),
 ('Mojito', 'Drinks', 6.49);
 
-UPDATE menu SET available = FALSE WHERE item_id = 'M101';
 SELECT * FROM menu ORDER BY item_id ASC;

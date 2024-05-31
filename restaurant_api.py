@@ -161,6 +161,20 @@ class RestaurantChoices:
     def complete(cls):
         # updates order_complete column in orders table from FALSE to TRUE and adds the amount paid to the db
         order_id_input = input("Enter Order ID: ")
+        query3 = """
+        SELECT order_complete
+        FROM orders
+        WHERE order_id = %s
+        """
+        cls.cursor.execute(query3, (order_id_input,))
+        result = cls.cursor.fetchone()
+
+        if result:
+            order_complete = bool(result[0])
+        if order_complete:
+            print(f"Order number '{order_id_input}' has already been paid for")
+            menu.restaurant()
+
         query2 = """
         SELECT total_price
         FROM orders
@@ -173,7 +187,13 @@ class RestaurantChoices:
             total_price = float(result[0])
             print(f"Your total is: £{total_price}")
 
+        while True:
             pm_input = input("Enter Payment Method (1-4): ")
+            if pm_input.isdigit() and 1 <= int(pm_input) <= 4:
+                return int(pm_input)
+            else:
+                print("PLease enter a number between 1 and 4")
+                pm_input
 
             amount_paid = 0.0
 

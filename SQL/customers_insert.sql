@@ -69,3 +69,8 @@ INSERT INTO customers (first_name, last_name, email, phone_number) VALUES
 ('Jacob', 'Nguyen', 'jacob.nguyen@example.com', 5558901239),
 ('Daniel', 'Nguyen', 'daniel.nguyen@example.com', 5559012348),
 ('William', 'Nguyen', 'william.nguyen@example.com', 5559012523);
+
+ALTER TABLE customers
+ADD deleted TIMESTAMP DEFAULT NULL;
+
+SELECT * FROM customers ORDER BY customer_id ASC;

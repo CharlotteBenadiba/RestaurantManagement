@@ -21,8 +21,11 @@ INSERT INTO waiters (first_name, last_name) VALUES
 ('Evelyn', 'Harris');
 
 
-SELECT * FROM waiters;
+SELECT * FROM waiters ORDER BY waiter_id ASC;
 SELECT * FROM orders ORDER BY modified DESC;
+
+ALTER TABLE waiters
+ADD active BOOLEAN DEFAULT TRUE
 
 
 ALTER TABLE Orders
