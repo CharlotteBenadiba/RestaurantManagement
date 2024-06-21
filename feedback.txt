@@ -1,0 +1,9 @@
+hackathon feedback
+
+- Technology 7/8 : good implementation of PostgreSQL for database management, uses Python classes to handle various operations (e.g., kitchen, manager, waitlist), and employs libraries like tabulate for data presentation. The implementation shows a high level of complexity and technical depth in managing different aspects of a restaurant.
+- Completion 7/8 : basics features for managing orders, updating menu items, generating reports, and handling the waitlist. It allows for comprehensive restaurant management.
+- Learning 6/8 : use of psycopg2 for PostgreSQL interactions, handling JSON data, and implementing various operations within a complex system. However, the scope could be expanded further with more advanced features like real-time updates
+
+Total : 20/24
+
+Overall, very good project ! You deliver a full completion of the project goals, and significant learning efforts. You demonstrate a strong grasp of database management, class-based programming, and practical implementation of a comprehensive restaurant management system. Well done !
